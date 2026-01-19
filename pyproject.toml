@@ -1,0 +1,9 @@
+[project]
+name = "mindfulness-dashboard"
+version = "0.1.0"
+description = 'Mindfullness Dashboard - Visualization for "Ein guter Plan" app data'
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "bokeh>=3.8.2",
+]
