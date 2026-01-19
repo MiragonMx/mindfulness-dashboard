@@ -1,3 +1,8 @@
+# Ignore data/backup files used for the visualization -
+# should not be in the repository, later loaded via an input
+ein-guter-plan-*.json
+ein-guter-plan-*.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
