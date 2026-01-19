@@ -43,7 +43,7 @@ This function exports all entered data in a .txt file with the data structured i
 
 ### Data Description
 
-The data put in via the app is on scales of 1-5,
+The data put in via the app is on scales of 0-4,
 with the available fields being:
 
 - sleep ("Have you slept well and long enough?")
