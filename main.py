@@ -1,13 +1,33 @@
 import json
 from datetime import date
+from enum import IntEnum
 
-from numpy import nan
+# from numpy import nan
+import numpy as np
+from bokeh.models import ColumnDataSource
+from bokeh.plotting import figure, show
 
-#
-# def main(x, y):
-#     p = figure(title="Simple Line", x_axis_label="x", y_axis_label="y")
-#     # p.line(x, y, legend_label="Temp.", line_width=2)
-#     show(p)
+
+class Quantity(IntEnum):
+    SLEEP = 0
+    MOOD = 1
+    FOOD = 2
+    HYDRATION = 3
+    EXERCISE = 4
+    SELFCARE = 5
+    SOCIAL = 6
+    STRESS = 7
+    COUNT = 8
+
+
+def main(x, y):
+    source = ColumnDataSource(data=dict(date=x, value=y))
+    p = figure(x_axis_type="datetime")
+
+    # p.line(x, y, legend_label="Temp.", line_width=2)
+    # p.line("date", "value", source=source, line_width=2)
+    p.scatter("date", "value", source=source)
+    show(p)
 
 
 if __name__ == "__main__":
@@ -40,66 +60,56 @@ if __name__ == "__main__":
     sorted_dates = sorted(dates)
     len_dates = len(sorted_dates)
 
-    values = {
-        "sleep": [nan] * (len_dates),
-        "mood": [nan] * (len_dates),
-        "food": [nan] * (len_dates),
-        "hydration": [nan] * (len_dates),
-        "exercise": [nan] * (len_dates),
-        "selfcare": [nan] * (len_dates),
-        "social": [nan] * (len_dates),
-        "stress": [nan] * (len_dates),
-    }
+    np_dates = np.array(sorted_dates, dtype=np.datetime64)
 
-    print(values["sleep"])
-    print(len(values["sleep"]))
-    print(len_dates)
-    print(len(all_data_points))
-    print(len(all_data_points) / 8)
+    # values = {
+    #     "sleep": np.empty(len_dates,),
+    #     "mood": [nan] * (len_dates),
+    #     "food": [nan] * (len_dates),
+    #     "hydration": [nan] * (len_dates),
+    #     "exercise": [nan] * (len_dates),
+    #     "selfcare": [nan] * (len_dates),
+    #     "social": [nan] * (len_dates),
+    #     "stress": [nan] * (len_dates),
+    # }
+    #
+    data = np.empty(
+        (
+            Quantity.COUNT,
+            len_dates,
+        ),
+        # dtype=np.int32,
+    )
+    data[:] = np.nan
+
+    # print(values["sleep"])
+    # print(len(values["sleep"]))
+    # print(len_dates)
+    # print(len(all_data_points))
+    # print(len(all_data_points) / 8)
 
     idx = 0
     last_date = all_data_points[0]["date"]
-    print(all_data_points[-1])
+    # print(all_data_points[-1])
     for pt in all_data_points:
         curr_date = date.strptime(pt["date"], "%d.%m.%Y")
         idx = sorted_dates.index(curr_date)
         if pt["type"] == "sleep":
-            values["sleep"][idx] = pt["value"]
+            data[Quantity.SLEEP][idx] = pt["value"]
         if pt["type"] == "mood":
-            values["mood"][idx] = pt["value"]
+            data[Quantity.MOOD][idx] = pt["value"]
         if pt["type"] == "food":
-            values["food"][idx] = pt["value"]
+            data[Quantity.FOOD][idx] = pt["value"]
         if pt["type"] == "hydration":
-            values["hydration"][idx] = pt["value"]
+            data[Quantity.HYDRATION][idx] = pt["value"]
         if pt["type"] == "exercise":
-            values["exercise"][idx] = pt["value"]
+            data[Quantity.EXERCISE][idx] = pt["value"]
         if pt["type"] == "selfcare":
-            values["selfcare"][idx] = pt["value"]
+            data[Quantity.SELFCARE][idx] = pt["value"]
         if pt["type"] == "social":
-            values["social"][idx] = pt["value"]
+            data[Quantity.SOCIAL][idx] = pt["value"]
         if pt["type"] == "stress":
-            values["stress"][idx] = pt["value"]
-
-    # for date in sorted_dates:
-    # print(date)
-
-    print(values["sleep"])
-    print(values["mood"])
-    print(values["food"])
-    print(values["stress"])
-
-    # for val in values["mood"]:
-    # print(val)
-
-    #     curr_date = date.strptime(pt["date"], "%d.%m.%Y")
-    #     if not (dates[-1] == curr_date):
-    #         dates.append(curr_date)
-    #         for key, val in values:
-    #             val.append(nan)
-    #
-
-    # for date in sorted_dates:
-    #     print(date)
+            data[Quantity.STRESS][idx] = pt["value"]
 
     # TEMPLATE STUFF:
     # prepare some data
@@ -107,3 +117,7 @@ if __name__ == "__main__":
     # y = [6, 7, 2, 4, 5]
     #
     # main(x, y)
+    # print(type(values["stress"]))
+    # print((values["stress"]))
+    # main(dates, values["stress"].copy())
+    main(np_dates, data[Quantity.SLEEP])
