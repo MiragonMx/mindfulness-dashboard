@@ -2,6 +2,7 @@
 import json
 
 # other libraries - see 3rd party licenses
+from bokeh.layouts import grid
 from bokeh.models import ColumnDataSource
 from bokeh.plotting import figure, show
 
@@ -15,7 +16,7 @@ def create_scatter_of_one_quantity(x, y):
     p = figure(x_axis_type="datetime")
 
     p.scatter("date", "value", source=source)
-    show(p)
+    return p
 
 
 if __name__ == "__main__":
@@ -25,4 +26,6 @@ if __name__ == "__main__":
 
     dates, data = data_preparation(raw)
 
-    create_scatter_of_one_quantity(dates, data[Quantity.SLEEP])
+    sleep_scatter = create_scatter_of_one_quantity(dates, data[Quantity.SLEEP])
+    layout = grid([[sleep_scatter]], sizing_mode="stretch_both")
+    show(layout)
