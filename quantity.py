@@ -16,3 +16,21 @@ class Quantity(IntEnum):
     SOCIAL = 6
     STRESS = 7
     COUNT = 8
+
+
+class QuantityLabels:
+    """
+    Class for abstract storage of the labels
+    """
+
+    val = [
+        "Sleep",
+        "Mood",
+        "Food",
+        "Hydration",
+        "Exercise",
+        "Selfcare",
+        "Social",
+        "Stress",
+        "Count",
+    ]
